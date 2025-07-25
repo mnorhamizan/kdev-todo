@@ -1,0 +1,52 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">{{ title }}</h1>
+    
+    <form (ngSubmit)="addTodo()" class="mb-6">
+      <div class="flex gap-2">
+        <input
+          [(ngModel)]="newTodoText"
+          name="todoInput"
+          type="text"
+          placeholder="Add a new todo..."
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        <button
+          type="submit"
+          class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        >
+          Add
+        </button>
+      </div>
+    </form>
+
+    <div class="space-y-2">
+      @for (todo of todos$ | async; track todo.id) {
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
+          <input
+            type="checkbox"
+            [checked]="todo.completed"
+            (change)="toggleTodo(todo.id)"
+            class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <span
+            [class]="todo.completed ? 'text-gray-500 line-through' : 'text-gray-800'"
+            class="flex-1"
+          >
+            {{ todo.text }}
+          </span>
+          <button
+            (click)="deleteTodo(todo.id)"
+            class="px-3 py-1 text-red-600 hover:bg-red-50 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Delete
+          </button>
+        </div>
+      } @empty {
+        <div class="text-center py-8 text-gray-500">
+          <p>No todos yet. Add one above!</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
